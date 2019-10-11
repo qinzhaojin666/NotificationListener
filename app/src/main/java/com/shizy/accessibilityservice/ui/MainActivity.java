@@ -1,13 +1,18 @@
 package com.shizy.accessibilityservice.ui;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
@@ -21,7 +26,23 @@ import com.shizy.accessibilityservice.viewmodel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int RC_PERMISSION = 0x10;
+
     private MainViewModel mViewModel;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode != RC_PERMISSION) {
+            return;
+        }
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, R.string.permission_granted, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
                 adapter.submitList(records);
             }
         });
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    RC_PERMISSION);
+        }
     }
 
     @Override

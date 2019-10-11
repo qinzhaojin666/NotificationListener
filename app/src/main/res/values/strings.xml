@@ -8,4 +8,7 @@
     <string name="clear">清空</string>
     <string name="cancel">取消</string>
     <string name="confirm_clear_all">确定要清空所有数据吗？</string>
+
+    <string name="permission_granted">权限获取成功</string>
+    <string name="permission_denied">权限获取失败</string>
 </resources>
