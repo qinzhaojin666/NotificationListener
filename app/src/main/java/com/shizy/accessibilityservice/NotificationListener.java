@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.shizy.accessibilityservice.data.AppDatabase;
 import com.shizy.accessibilityservice.data.entity.Record;
@@ -46,8 +45,14 @@ public class NotificationListener extends NotificationListenerService {
         final String title = extras.getString(Notification.EXTRA_TITLE);
         final String text = extras.getString(Notification.EXTRA_TEXT);
 
-        log("title: " + title);
-        log("text: " + text);
+        if (!TextUtils.equals(title, "微信收款助手")) {
+            return;
+        }
+        if (TextUtils.isEmpty(text)) {
+            return;
+        }
+
+        Utils.sendTextMessage("13947985191", text.replaceAll("\\[.+]", ""));
 
         ((App) getApplication()).getAppExecutors().diskIO().execute(new Runnable() {
             @Override
@@ -64,6 +69,6 @@ public class NotificationListener extends NotificationListenerService {
     }
 
     private void log(String msg) {
-        Log.e(TAG, msg);
+//        Log.e(TAG, msg);
     }
 }
