@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.shizy.accessibilityservice.R;
 import com.shizy.accessibilityservice.data.entity.Record;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public class MainAdapter extends PagedListAdapter<Record, MainAdapter.RecordViewHolder> {
 
     private static DiffUtil.ItemCallback<Record> callback = new DiffUtil.ItemCallback<Record>() {
@@ -48,20 +51,24 @@ public class MainAdapter extends PagedListAdapter<Record, MainAdapter.RecordView
 
     static class RecordViewHolder extends RecyclerView.ViewHolder {
 
+        private static final SimpleDateFormat FORMAT = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
+
         private TextView titleView;
         private TextView contentView;
+        private TextView dateView;
 
         public RecordViewHolder(@NonNull View itemView) {
             super(itemView);
             titleView = itemView.findViewById(R.id.title);
             contentView = itemView.findViewById(R.id.content);
+            dateView = itemView.findViewById(R.id.date);
         }
 
         void bindData(@NonNull Record record) {
             titleView.setText(record.getTitle());
             contentView.setText(record.getText());
+            dateView.setText(FORMAT.format(record.getCreateAt()));
         }
-
     }
 
 }

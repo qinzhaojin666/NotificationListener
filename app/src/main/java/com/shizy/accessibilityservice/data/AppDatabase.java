@@ -6,8 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.shizy.accessibilityservice.data.converter.DateConverter;
 import com.shizy.accessibilityservice.data.dao.RecordDao;
 import com.shizy.accessibilityservice.data.entity.Record;
 
@@ -15,6 +17,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Record.class}, version = 1)
+@TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "app_db";
